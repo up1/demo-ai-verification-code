@@ -74,3 +74,17 @@ HTTP layer, persistence and concurrency are out of scope.
 | **Failure Debugging** | Automatic shrinking reduces failing inputs to the minimal human-readable counterexample. | Corpus minimization tools reduce crashing byte payloads (often still hard to read). | Produces an exact counterexample trace of state transitions leading to violation. |
 | **Setup & Effort** | Low to Moderate — integrates directly into standard unit test suites (e.g., `fast-check`). | Moderate — requires dedicated fuzz harnesses, sanitizers, and long CPU runs. | Very High — requires specialized formal languages and deep mathematical expertise. |
 
+
+## Key Differences & When to Use Each
+
+* Property-Based Testing (fast-check, Hypothesis, QuickCheck)
+	* Focus: Functional correctness. You specify what valid inputs look like (e.g., "a user object with an age between 18 and 99") and check high-level rules.
+	* Use when: You want fast feedback inside your normal CI unit test suite to catch edge cases in algorithms, state machines, and data transformations.
+* Fuzz Testing (AFL++, libFuzzer, Jazzer.js)
+	* Focus: Robustness and security. Modern coverage-guided fuzzers instrument your code to see which execution branches an input hits, mutating inputs to reach deep, obscure code paths and trigger crashes.
+	* Use when: You are parsing untrusted external input (binary formats, network protocols, file uploads, regex engines) where a single crash or memory error is a security vulnerability.
+* Formal Verification (TLA+, Alloy, Kani, Dafny)
+	* Focus: Absolute certainty. Testing (both PBT and fuzzing) can only prove the presence of bugs, never their absence. Formal verification checks every possible execution path mathematically.
+	* Use when: A bug would be catastrophic or irreversible—such as distributed consensus protocols, cryptographic primitives, smart contracts, aerospace systems, or medical devices.
+
+
