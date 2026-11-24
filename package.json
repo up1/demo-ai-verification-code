@@ -1,0 +1,17 @@
+{
+  "name": "verified-rest-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/*.test.js",
+    "verify": "node verify/run.js",
+    "lock": "node verify/lock.js --write"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "supertest": "^7.3.2",
+    "z3-solver": "^5.4.1"
+  }
+}

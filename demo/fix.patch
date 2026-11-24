@@ -1,0 +1,21 @@
+--- a/src/core.js	2026-11-24 12:28:44.775041498 +0700
++++ b/src/core.js	2026-11-24 12:28:44.785138837 +0700
+@@ -9,6 +9,7 @@
+ function transfer(balances, src, dst, amount) {
+   if (!Number.isInteger(amount) || amount <= 0) throw new ApiError(400, 'amount must be a positive integer');
+   if (!(src in balances) || !(dst in balances)) throw new ApiError(404, 'unknown account');
++  if (src === dst) throw new ApiError(400, 'cannot transfer to the same account');
+   if (balances[src] < amount) throw new ApiError(409, 'insufficient funds');
+ 
+   const newSrc = balances[src] - amount;
+--- a/verify/model.js	2026-11-24 12:28:44.775065824 +0700
++++ b/verify/model.js	2026-11-24 12:28:44.786555559 +0700
+@@ -4,7 +4,7 @@
+ // that drifts from the implementation is caught.
+ function modelTransfer(Z, exists, bal, src, dst, amt) {
+   const ok = Z.And(
+-    amt.gt(0), exists.select(src), exists.select(dst), bal.select(src).ge(amt));
++    amt.gt(0), exists.select(src), exists.select(dst), src.neq(dst), bal.select(src).ge(amt));
+   const newSrc = bal.select(src).sub(amt);   // read BOTH from original state
+   const newDst = bal.select(dst).add(amt);
+   const written = bal.store(src, newSrc).store(dst, newDst);  // dst written last
