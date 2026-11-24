@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test tests/*.test.js",
+    "test:unit": "node --test tests/api.test.js",
+    "test:property": "node --test tests/property.test.js",
+    "test:fuzz": "node --test tests/fuzz.test.js",
     "verify": "node verify/run.js",
     "lock": "node verify/lock.js --write"
   },
@@ -13,5 +16,8 @@
     "express": "^5.3.0",
     "supertest": "^7.3.2",
     "z3-solver": "^5.4.1"
+  },
+  "devDependencies": {
+    "fast-check": "^4.11.0"
   }
 }
